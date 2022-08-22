@@ -158,7 +158,28 @@ jobs:
       - destroy-environment:
           workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
           event: on_fail
-
+  configure-infrastructure:
+    docker:
+      - image: python:3.7-alpine3.11
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Install dependencies
+          command: |
+            apk add --update curl nodejs npm ansible zip
+            pip install awscli
+      - add_ssh_keys:
+          fingerprints: [ "4e:98:cf:1a:41:3a:d8:4c:c1:26:e2:45:b3:5b:ad:db" ]
+      - run:
+          name: Configure server
+          command: |
+            cd .circleci/ansible
+            ansible-playbook -i inventory.txt configure-server.yml
+      - destroy-environment:
+          workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
+          event: on_fail
 workflows:
   default:
     jobs:
@@ -174,3 +195,8 @@ workflows:
           requires: [ build-frontend ]
       - deploy-infrastructure:
           requires: [ test-frontend, test-backend, scan-frontend, scan-backend ]
+          filters:
+            branches:
+              only: [ master ]
+      - configure-infrastructure:
+          requires: [ deploy-infrastructure ]
