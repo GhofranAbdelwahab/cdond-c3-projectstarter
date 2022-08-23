@@ -42,10 +42,12 @@ commands:
       workflow_id:
         type: string
         default:   ${CIRCLE_WORKFLOW_ID:0:7}
+      event:
+        type: string
     steps:
       - run:
           name: Revert migrations
-          when: on_fail
+          when: << parameters.event >>
           command: |
             SUCCESS=$(curl --insecure  https://kvdb.io/Q4egjoFpbmRTn6JoX8VBtV/migration_<<parameters.workflow_id>>)
             if(( $SUCCESS==1 )); 
@@ -245,7 +247,9 @@ jobs:
       - destroy-environment:
           workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
           event: on_fail
-
+      - revert-migrations:
+          workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
+          event: on_fail
   deploy-frontend:
     docker:
       - image: cimg/base:stable
