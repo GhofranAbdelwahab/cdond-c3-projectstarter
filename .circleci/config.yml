@@ -49,7 +49,7 @@ commands:
           name: Revert migrations
           when: << parameters.event >>
           command: |
-            SUCCESS=$(curl --insecure  https://kvdb.io/Q4egjoFpbmRTn6JoX8VBtV/migration_<<parameters.workflow_id>>)
+            SUCCESS=$(curl --insecure  https://kvdb.io/3h21HHTCjjBachREdSmxL2/migration_<<parameters.workflow_id>>)
             if(( $SUCCESS==1 )); 
             then
               cd ~/project/backend
@@ -223,6 +223,7 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
+      -
       - attach_workspace:
           at: ~/
       - run:
@@ -237,10 +238,10 @@ jobs:
           command: |
             if grep -q "has been executed successfully." ~/project/backend/migrations_dump.txt
             then
-            curl https://kvdb.io/Q4egjoFpbmRTn6JoX8VBtV/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1'
+            curl  --insecure -d '1' https://kvdb.io/3h21HHTCjjBachREdSmxL2/migration_${CIRCLE_WORKFLOW_ID:0:7}
             fi
           # run curl -d 'email=ghofran.abdelraouf@vodafone.com' https://kvdb.io
-          # value is Q4egjoFpbmRTn6JoX8VBtV
+          # value is 3h21HHTCjjBachREdSmxL2
       - destroy-environment:
           workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
           event: on_fail
