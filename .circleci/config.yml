@@ -224,7 +224,6 @@ jobs:
     steps:
       - checkout
       - aws-cli
-      - node-js
       - attach_workspace:
           at: ~/
       - run:
