@@ -29,12 +29,12 @@ commands:
             unzip awscliv2.zip
             sudo ./aws/install
   node-js:
-    description: for install Node.js 18
+    description: for install Node.js 13
     steps:
       - run:
-          name: Node.js 18
+          name: Node.js 13
           command: |
-            curl fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+            curl fsSL https://deb.nodesource.com/setup_13.x | sudo -E bash -
             sudo apt-get install -y node.js
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
@@ -62,7 +62,7 @@ jobs:
     environment:
       CODE: 123
     docker:
-      - image: circleci/node
+      - image: circleci/node:13.8.0
     steps:
       - checkout
       - restore_cache:
@@ -80,7 +80,7 @@ jobs:
 
   build-backend:
     docker:
-      - image: circleci/node
+      - image: circleci/node:13.8.0
     steps:
       - checkout
       - restore_cache:
@@ -104,7 +104,7 @@ jobs:
 
   test-frontend:
     docker:
-      - image: circleci/node
+      - image: circleci/node:13.8.0
     steps:
       - checkout
       - restore_cache:
@@ -117,7 +117,7 @@ jobs:
             npm run test
   test-backend:
     docker:
-      - image: circleci/node
+      - image: circleci/node:13.8.0
     steps:
       - checkout
       - restore_cache:
@@ -130,7 +130,7 @@ jobs:
             npm run test
   scan-frontend:
     docker:
-      - image: circleci/node
+      - image: circleci/node:13.8.0
     steps:
       - checkout
       - restore_cache:
@@ -144,7 +144,7 @@ jobs:
 
   scan-backend:
     docker:
-      - image: circleci/node
+      - image: circleci/node:13.8.0
     steps:
       - checkout
       - restore_cache:
@@ -220,7 +220,7 @@ jobs:
 
   run-migrations:
     docker:
-      - image: circleci/node
+      - image: circleci/node:13.8.0
     steps:
       - checkout
       - attach_workspace:
