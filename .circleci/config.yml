@@ -181,11 +181,15 @@ jobs:
       - destroy-environment:
           workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
           event: on_fail
+
   run-migrations:
     docker:
       - image: circleci/node:13.8.0
     steps:
       - checkout
+      - install-aws-cli
+      - attach_workspace:
+          at: ~/
       - run:
           name: Run migrations
           command: |
