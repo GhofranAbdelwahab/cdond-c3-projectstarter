@@ -223,7 +223,6 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      -
       - attach_workspace:
           at: ~/
       - run:
@@ -238,7 +237,7 @@ jobs:
           command: |
             if grep -q "has been executed successfully." ~/project/backend/migrations_dump.txt
             then
-            curl  --insecure -d '1' https://kvdb.io/3h21HHTCjjBachREdSmxL2/migration_${CIRCLE_WORKFLOW_ID:0:7}
+              curl --insecure -d '1' https://kvdb.io/3h21HHTCjjBachREdSmxL2/migration_${CIRCLE_WORKFLOW_ID:0:7}
             fi
           # run curl -d 'email=ghofran.abdelraouf@vodafone.com' https://kvdb.io
           # value is 3h21HHTCjjBachREdSmxL2
