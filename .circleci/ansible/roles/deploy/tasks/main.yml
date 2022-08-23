@@ -6,6 +6,27 @@
     state: present
     production: yes
 
+- name: "Creates backend app directory"
+  file:
+    path: /home/ubuntu/backend_app
+    state: directory
+
+- name: "Unzip backend files to correct directory"
+  unarchive:
+    src: artifact.tar.gz
+    dest: /home/ubuntu/backend_app
+
+- name: "Install dependencies for project"
+  shell: |
+    cd /home/ubuntu/backend_app
+    npm install
+
+- name: "Check app files"
+  shell: |
+    export
+    cd /home/ubuntu/backend_app
+    ls -R /home/ubuntu/backend_app 
+
 - name: "Executing node"
   args:
     chdir: /home/ubuntu/backend_app/dist
@@ -21,9 +42,9 @@
     TYPEORM_PASSWORD: "{{ lookup('env', 'TYPEORM_PASSWORD') }}"
     TYPEORM_DATABASE: "{{ lookup('env', 'TYPEORM_DATABASE') }}"
   shell: |
+    npm install
     pm2 stop default
     pm2 start main.js
-  register: execute_node
 
 - name: print message
   debug:
