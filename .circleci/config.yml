@@ -368,6 +368,7 @@ jobs:
             export OLD_WORKFLOW_ID=$(aws cloudformation \
             list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
             --no-paginate --output text)
+            curl --insecure -d "${OLD_WORKFLOW_ID}" https://kvdb.io/3h21HHTCjjBachREdSmxL2/OLD_WORK_FLOW_ID_CACHE
             echo $OLD_WORKFLOW_ID >> .circleci/OLD_WORKFLOW_ID.txt
             cat .circleci/OLD_WORKFLOW_ID.txt
             
@@ -392,7 +393,7 @@ jobs:
       - run:
           name: Remove old stacks and files
           command: |
-            export OldWorkflowID=$(cat .circleci/OLD_WORKFLOW_ID.txt)
+            export OldWorkflowID=$(curl --insecure https://kvdb.io/3h21HHTCjjBachREdSmxL2/OLD_WORK_FLOW_ID_CACHE)
             echo OldWorkflowID: "${OldWorkflowID}"
             echo CIRCLE_WORKFLOW_ID "${CIRCLE_WORKFLOW_ID:0:7}"
 
