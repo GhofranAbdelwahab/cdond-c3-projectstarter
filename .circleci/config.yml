@@ -239,6 +239,7 @@ jobs:
             then
               curl --insecure -d '1' https://kvdb.io/UaaJUAENUpxW8x8Z8AHNVw/migration_${CIRCLE_WORKFLOW_ID:0:7}
             fi
+
           # run curl -d 'email=ghofran.abdelraouf@vodafone.com' https://kvdb.io
           # value is UaaJUAENUpxW8x8Z8AHNVw
       - destroy-environment:
